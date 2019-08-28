@@ -7,10 +7,8 @@ import { Router, Data } from '@angular/router';
 import { tap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
-
-// PAGINATION
-// import { PagerService } from 'src/app/_services/pager.service';
-
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { StarRaterComponent } from 'src/app/shared/components/star-rater/star-rater.component';
 
 @Component({
   selector: 'app-rating-formation',
@@ -23,44 +21,58 @@ export class RatingFormationPage implements OnInit {
   // AFFICHAGE DU SPINNER DE CHARGEMENT
   isLoadingResults = true;
 
-  slides: any;
   evals$: Observable<any>;
+
+  // NAVIGATION DES QUESTIONS
+  sliceFrom = 0;
+  sliceTo = 1;
+
+  form: FormGroup;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     // tslint:disable-next-line: variable-name
     private _http: HttpService,
-    // SERVICE POUR LA PAGINATION
-    // private pagerService: PagerService
   ) {}
-
-  // PAGINATION
-  // array of all items to be paged
-  private allItems: any[];
-  // pager object
-  pager: any = {};
-  // paged items
-  pagedItems: any[];
 
 
   ngOnInit() {
+    // STOKAGE DES VALEURS DU RATTING
+    this.form = new FormGroup({
+      ratting: new FormArray([])
+    });
 
-    // get dummy data
-    // this._http.get('http://localhost:8080/api/v1/eval/')
-    // .map((response: Response) => response.json())
-    // .subscribe(data => {
-    //     // set items to json response
-    //     this.allItems = data;
-
-    //     // initialize to page 1
-    //     this.setPage(1);
-    // });
-
-
-
+    // RECUPERATION DES QUESTIONS D'EVALUATION
     this.getPost();
-    // console.log( 'logged --> ', this.authService.isLoggedIn );
+  }
+
+  add( i, starRater: StarRaterComponent ) {
+    // add to form new value
+    ( this.form.get( 'ratting' ) as FormArray ).push(
+      new FormGroup( {
+        q_index: new FormControl( this.sliceFrom + 1 ),
+        r_value: new FormControl( starRater._value )
+      } )
+    );
+    // update value DOM for nex quuestion
+    this.sliceFrom = ++this.sliceFrom ;
+    this.sliceTo = ++this.sliceTo ;
+    console.log( this.form.value );
+  }
+
+  remove( i, starRater: StarRaterComponent ) {
+    this.sliceFrom = --this.sliceFrom ;
+    this.sliceTo = --this.sliceTo ;
+    console.log( 'Value remove -->> ', i );
+    console.log( 'Form -->> ', this.form );
+
+    ( this.form.get( 'ratting' ) as FormArray ).push(
+      new FormGroup( {
+        q_index: new FormControl( i ),
+        r_value: new FormControl( starRater._value )
+      } )
+    );
   }
 
   getPost() {
@@ -72,12 +84,6 @@ export class RatingFormationPage implements OnInit {
       tap( data => console.log( data ) ),
       map( (res: { evals: any[] } ) => res.evals )
     );
-  }
-
-
-  logout() {
-    localStorage.removeItem( 'authToken' );
-    this.router.navigate( [ 'tabs/signin' ] );
   }
 
 }

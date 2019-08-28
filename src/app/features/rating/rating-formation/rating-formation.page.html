@@ -65,10 +65,10 @@
       
       
       <div *ngIf="( evals$ | async ) as evals; else noData" class="bloc-rating">
-        <ion-card *ngFor="let eval of evals | slice:0:1; let i = index; ">
+        <ion-card *ngFor="let eval of evals | slice:sliceFrom:sliceTo; let i = index; ">
           <ion-card-header>
             <ion-card-subtitle>{{ eval.type }}</ion-card-subtitle>
-            <ion-card-title>{{ i + 1 }}/{{ evals.length }}</ion-card-title>
+            <ion-card-title>{{sliceFrom + 1 }}/{{ evals.length }}</ion-card-title>
           </ion-card-header>
           
           <ion-card-content>
@@ -76,17 +76,19 @@
                   {{ eval.question }}
               </ion-item>
               <ion-item lines="none">
-                  <ion-buttons slot="start">
+                  <!-- <ion-buttons slot="start">
                       <ion-icon size="large" color="warning" name="arrow-dropleft" 
-                      (click)="add( i )"></ion-icon>
-                  </ion-buttons>
-                  <ion-buttons slot="end">
+                      (click)="remove( sliceFrom, starRater )"></ion-icon>
+                  </ion-buttons> -->
+                  <!-- <ion-buttons slot="end">
                       <ion-icon size="large" color="warning" name="arrow-dropright" 
-                      (click)="add( i )"></ion-icon>
-                  </ion-buttons>
+                      (click)="add( i, starRater )"></ion-icon>
+                  </ion-buttons> -->
+                  <ion-button slot="end" (click)="add( i, starRater )">Suivant</ion-button>
+
               </ion-item>
               <ion-item lines="none" class="star">
-                  <star-rater></star-rater>
+                  <star-rater #starRater ></star-rater>
               </ion-item>
           </ion-card-content>
         </ion-card>
