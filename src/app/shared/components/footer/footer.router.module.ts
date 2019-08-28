@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FooterPage } from './footer.page';
-
+// PROTECTION PAGES
 import { AuthGuard } from '../../../_core/guard/auth.guard';
 import { CheckAuthGuard } from '../../../_core/guard/check-auth.guard';
 
