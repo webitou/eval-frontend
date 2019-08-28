@@ -17,16 +17,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AdminModule } from './admin/admin.module';
 
-import {
-  MatInputModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSortModule,
-  MatTableModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatFormFieldModule } from '@angular/material';
+// import {
+//   MatInputModule,
+//   MatPaginatorModule,
+//   MatProgressSpinnerModule,
+//   MatSortModule,
+//   MatTableModule,
+//   MatIconModule,
+//   MatButtonModule,
+//   MatCardModule,
+//   MatFormFieldModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -43,15 +43,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
+    // MatInputModule,
+    // MatTableModule,
+    // MatPaginatorModule,
+    // MatSortModule,
+    // MatProgressSpinnerModule,
+    // MatIconModule,
+    // MatButtonModule,
+    // MatCardModule,
+    // MatFormFieldModule,
     AdminModule
   ],
   providers: [
