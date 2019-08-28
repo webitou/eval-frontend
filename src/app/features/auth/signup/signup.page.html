@@ -1,0 +1,58 @@
+<app-header title="Login" [backBtn]="true"></app-header>
+
+<ion-content>
+  <!-- (ngSubmit)="onFormSubmit(loginForm.value)" -->
+  <form [formGroup]="loginForm">
+    <ion-grid>  
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <h3>Créer votre compte !</h3>
+          </div>
+          
+          <div padding>
+            <ion-item class="example-full-width">
+              <ion-label position="floating">Nom complet</ion-label>
+                  <ion-input  name="fullname" type="text" formControlName="fullname" required></ion-input>
+            </ion-item>
+
+            <ion-item class="example-full-width">
+              <ion-label position="floating">Adresse mail</ion-label>
+              <ion-input name="email" type="email" formControlName="email" required ></ion-input>
+              <span *ngIf="!loginForm.controls.email.valid &&
+                  (loginForm.controls.email.dirty || submitted)" class="validator-error">
+                  Entrer une adresse mail valide...</span>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Mot de passe</ion-label>
+              <ion-input name="password" type="password" formControlName="password" required></ion-input>
+              <span *ngIf="!loginForm.controls.password.valid && 
+                  (loginForm.controls.password.dirty || submitted)" class="validator-error">
+                  Les mots de passe doit comporter au moins 8 caractères.
+              </span>
+            </ion-item>
+
+          </div>
+          <div padding>
+            <ion-button  size="large" expand="block" (click)="onFormSubmit(loginForm.value)" [disabled]="loginForm.invalid"  >Enregister</ion-button>
+            </div>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col>
+          <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col padding>
+          <ion-button size="large" expand="block" (click)="signin()">Déjà un compte</ion-button>
+        </ion-col>
+      </ion-row>
+    
+    </ion-grid>
+  </form>
+
+</ion-content>

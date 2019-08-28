@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-icon (click)="back()" name="arrow-back" slot="start" size="large"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Modifocation de l'utilisateur
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+    <form [formGroup]="form">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Nom Prénom</ion-label>
+            <ion-input type="text" name="fullname" formControlName="fullname" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="text" name="email" formControlName="email" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">password</ion-label>
+            <ion-input type="text" name="password" formControlName="password" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row> -->
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Administrateur</ion-label>
+            <ion-checkbox color="dark" name='admin' formControlName="admin" [checked]="false" ></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item><h2>Formations</h2></ion-item>
+        </ion-col>
+      </ion-row>
+
+  
+      <ion-row>
+          <ion-col>
+           
+            <ion-list> {{ userForms | async | json }}
+              <ion-item *ngIf="( userForms$ | async ) as userForms; else noformation"> 
+      
+                <ion-list *ngFor="let userForm of userForms">
+                    <ion-item >{{ userForm.user.course.title }}</ion-item>      
+                </ion-list>
+
+              </ion-item>
+          
+              <ng-template #noformation>
+                <ion-row>
+                  <ion-col>
+                    <ion-item color="warning">
+                      <ion-label>
+                        Il n'y a pas de formation
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ng-template>
+
+            </ion-list>
+          </ion-col>
+        </ion-row> 
+
+      <ion-button (click)="submit()" expand="block" >Enregistrer</ion-button>
+    </ion-grid>
+    </form>
+  </ion-content>

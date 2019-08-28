@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-toolbar color="primary">
+    
+    <ion-icon (click)="back()" *ngIf="backBtn" name="arrow-back" slot="start" size="large"></ion-icon>
+      <pre>{{ logged$|async|json }}</pre>
+     
+    <ion-buttons slot="secondary" >
+      <div *ngIf="logged$|async as logged"> 
+        <ion-button (click)="logout()" title="Déconnexion" >
+          <ion-icon slot="icon-only"  name="log-out"></ion-icon>
+        </ion-button> 
+
+        <ion-button title="Profil" >
+          <ion-icon slot="icon-only" (click)="getProfil()" name="contact"></ion-icon>
+        </ion-button>
+      </div> 
+      <ion-button *ngIf="dspSearchBtn" (click)="getSearch()" title="Rechercher">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+
+      </ion-buttons>
+
+      <ion-buttons slot="primary">
+      
+        <ion-menu-button slot="end"></ion-menu-button>
+        
+      </ion-buttons>
+
+      <ion-title>{{ title }}</ion-title>
+
+    </ion-toolbar>
+
+    <ion-searchbar id="search" *ngIf="searchBtn" (ionChange)="search($event)" animated placeholder="Nom du cours, code"></ion-searchbar>
+
+</ion-header>

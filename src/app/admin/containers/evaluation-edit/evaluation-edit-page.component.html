@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon (click)="back()" name="arrow-back" slot="start" size="large"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Modifier la question
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  <form [formGroup]="form">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Question d'évaluation</ion-label>
+          <ion-input type="text" name="question" formControlName="question" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Type</ion-label>
+          <ion-select formControlName="qtype" name="qtype">
+            <ion-select-option *ngFor="let qtype of qtypes" [value]="evalquest._id" selected="selected" >{{ evalquest.name }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    
+    <ion-segment lines="none" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="del" class="del">
+          <ion-label>Supprimer</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="save">
+          <ion-label>Enregistrer</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+  </ion-grid>
+  </form>
+</ion-content>

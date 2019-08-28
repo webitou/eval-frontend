@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon (click)="back()" *ngIf="backBtn" name="arrow-back" slot="start"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Liste des utilisateurs
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  <!-- {{ users$ |async | json }} -->
+<ion-content>
+  
+  <ion-grid>
+    <ion-row *ngIf="(users$|async) as users; else noData" color="primary" justify-content-center>
+      <ion-col>
+        <ion-card tappable routerLink="../user/{{ user?._id }}" *ngFor="let user of users">
+          
+          <ion-card-header>
+            <ion-card-title color="primary">{{ user?.fullname }}</ion-card-title> 
+          </ion-card-header>
+
+          <ion-card-content>  
+            <ion-row>
+              <ion-col>
+                <ion-text>
+                  {{ user?.email }} <br> {{ user?.password }}
+                </ion-text>
+              </ion-col>
+              <ion-icon name="logo-freebsd-devil" *ngIf="user?.admin == 1" class="larger"></ion-icon>
+            </ion-row>
+              
+              <ion-button color="danger" >
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button>
+
+            </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ng-template #noData>
+        <ion-row>
+          <ion-col>
+            <ion-text>No users</ion-text>
+          </ion-col>
+        </ion-row>
+    </ng-template>
+  </ion-grid>
+  
+</ion-content>

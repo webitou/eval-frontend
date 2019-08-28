@@ -1,0 +1,102 @@
+<app-header title="Formations" [backBtn]="true"></app-header>
+
+<ion-content>
+    
+    <div class="loading-shade" *ngIf="isLoadingResults">
+      <ion-spinner name="bubbles"> *ngIf="isLoadingResults"></ion-spinner>
+    </div>
+    
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <h3>Evaluation de la formation</h3>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-list *ngIf="(evals$|async) as evals; else noData" color="primary" justify-content-center>
+          <ion-row *ngFor="let eval of evals">
+            <ion-col><ion-item>{{ eval?.question }}</ion-item></ion-col>
+          </ion-row> 
+      </ion-list> 
+      
+      <ion-row>
+          <ion-col>
+            <section>
+              <ion-button slot="end">Enregistrement</ion-button>
+            </section>
+          </ion-col>
+      </ion-row> -->
+
+
+    </ion-grid>
+
+
+  <!-- <ion-item>
+    <!-- *ngIf="hidePrev" --
+    <ion-icon name="ios-arrow-back" float-left class="slideNav prevSlide" (click)="prevSlide()"></ion-icon>
+    <!-- *ngIf="hideNext" --
+    <ion-icon name="ios-arrow-forward" float-right class="slideNav nextSlide" (click)="nextSlide()"></ion-icon>
+  </ion-item>   
+    <ion-slides (ionSlideDidChange)="slideChanged()" pager #imageSlides>
+        <ion-slide *ngIf="( evals$ | async ) as evals; else noData">
+            
+        
+          <ion-slide *ngFor="let eval of evals">
+              <ion-label>{{i + 1}}. {{ eval?.question }}</ion-label>
+          </ion-slide>
+
+        </ion-slide>
+    </ion-slides> -->
+
+
+
+    <!-- <ul *ngIf="( evals$ | async ) as evals; else noData">
+        <li *ngFor="let eval of evals | slice:0:1; let i = index">
+          {{i}} {{eval.question}}
+        </li>
+      </ul>
+      
+      <ion-item>
+        <ion-button (click)="nextButtonClick()" >Next</ion-button>
+      </ion-item> -->
+
+      
+      
+      <div *ngIf="( evals$ | async ) as evals; else noData" class="bloc-rating">
+        <ion-card *ngFor="let eval of evals | slice:0:1; let i = index; ">
+          <ion-card-header>
+            <ion-card-subtitle>{{ eval.type }}</ion-card-subtitle>
+            <ion-card-title>{{ i + 1 }}/{{ evals.length }}</ion-card-title>
+          </ion-card-header>
+          
+          <ion-card-content>
+              <ion-item>
+                  {{ eval.question }}
+              </ion-item>
+              <ion-item lines="none">
+                  <ion-buttons slot="start">
+                      <ion-icon size="large" color="warning" name="arrow-dropleft" 
+                      (click)="add( i )"></ion-icon>
+                  </ion-buttons>
+                  <ion-buttons slot="end">
+                      <ion-icon size="large" color="warning" name="arrow-dropright" 
+                      (click)="add( i )"></ion-icon>
+                  </ion-buttons>
+              </ion-item>
+              <ion-item lines="none" class="star">
+                  <star-rater></star-rater>
+              </ion-item>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      
+
+
+
+      
+   
+      
+</ion-content>

@@ -1,0 +1,171 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon (click)="back()" name="arrow-back" slot="start" size="large"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Modifier la formation
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  <form [formGroup]="form">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Nom de la formation</ion-label>
+          <ion-input type="text" name="title" formControlName="title" required></ion-input>
+          <div *ngFor="let validation of account_validation_messages.title" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('title').hasError(validation.type) && (form.get('title').dirty || form.get('title').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Référence de la formation</ion-label>
+          <ion-input type="text" name="reference" formControlName="reference" required></ion-input>
+          <div *ngFor="let validation of account_validation_messages.reference" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('reference').hasError(validation.type) && (form.get('reference').dirty || form.get('reference').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Date de debut</ion-label>
+          <ion-datetime name="dateStart" formControlName="dateStart" displayFormat="DD MMMM YYYY" 
+          monthNames="janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre"
+          monthShortNames="jan, fev, mar, avr, mai, juin, juil, aou, sep, oct, nov, dec"
+          dayNames="dimanche, lundi, mardi, mercredi, jeudi, vendredi, samedi"
+          dayShortNames="dim, lun, mar, mer, jeu, ven, sam"></ion-datetime>
+          <div *ngFor="let validation of account_validation_messages.dateStart">
+            <p class="error-message" *ngIf="form.get('dateStart').hasError(validation.type) && (form.get('dateStart').dirty || form.get('dateStart').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Date de fin</ion-label>
+          <ion-datetime name="dateEnd" formControlName="dateEnd" displayFormat="DD MMMM YYYY" 
+          monthNames="janvier, février, mars, avril, mai, juin, juillet, août, septembre, octobre, novembre, décembre"
+          monthShortNames="jan, fev, mar, avr, mai, juin, juil, aou, sep, oct, nov, dec"
+          dayNames="dimanche, lundi, mardi, mercredi, jeudi, vendredi, samedi"
+          dayShortNames="dim, lun, mar, mer, jeu, ven, sam"></ion-datetime>
+          <div *ngFor="let validation of account_validation_messages.dateEnd" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('dateEnd').hasError(validation.type) && (form.get('dateEnd').dirty || form.get('dateEnd').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Jour</ion-label>
+          <ion-select name="dayWeek" formControlName="dayWeek">
+            <ion-select-option *ngFor="let day of dally" [value]="day.id" selected="selected" >{{ day.name }}</ion-select-option>
+            <div *ngFor="let validation of account_validation_messages.dayWeek" class="info-msg">
+              <p class="error-msg" *ngIf="form.get('dayWeek').hasError(validation.type) && (form.get('dayWeek').dirty || form.get('dayWeek').touched)">{{ validation.message }}</p>
+            </div>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Heure début</ion-label> 
+          <ion-datetime name="timeStart" formControlName="timeStart" displayFormat="HH:mm" ></ion-datetime> 
+          <div *ngFor="let validation of account_validation_messages.timeStart" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('timeStart').hasError(validation.type) && (form.get('timeStart').dirty || form.get('timeStart').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Heure fin</ion-label>
+          <ion-datetime name="timeEnd" formControlName="timeEnd" displayFormat="HH:mm"></ion-datetime>
+          <div *ngFor="let validation of account_validation_messages.timeEnd" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('timeEnd').hasError(validation.type) && (form.get('timeEnd').dirty || form.get('timeEnd').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Formateur</ion-label>
+          <ion-input name="teacher" formControlName="teacher"></ion-input>
+          <div *ngFor="let validation of account_validation_messages.teacher" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('teacher').hasError(validation.type) && (form.get('teacher').dirty || form.get('teacher').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea name="description" placeholder="Description de la formation" formControlName="description"></ion-textarea>
+          <div *ngFor="let validation of account_validation_messages.description" class="info-msg">
+            <p class="error-msg" *ngIf="form.get('description').hasError(validation.type) && (form.get('description').dirty || form.get('description').touched)">{{ validation.message }}</p>
+          </div>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Objectif</ion-label>
+          <ion-textarea name="objectif" placeholder="Objectif de la formation" formControlName="objectif"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Contenu</ion-label>
+          <ion-textarea name="content" placeholder="Contenu de la formation" formControlName="content"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Pré-requis</ion-label>
+          <ion-textarea name="prerequisites" placeholder="Pré-requis de la formation" formControlName="prerequisites"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    
+    <ion-segment lines="none" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="del" class="del">
+          <ion-label>Supprimer</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="save">
+          <ion-label>Enregistrer</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+  </ion-grid>
+  </form>
+</ion-content>

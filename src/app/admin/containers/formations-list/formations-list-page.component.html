@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon (click)="back()" *ngIf="backBtn" name="arrow-back" slot="start"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Liste des Formations
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  
+  <ion-list *ngIf="(formations$|async) as formations; else noData" color="primary" justify-content-center>
+    <ion-row>
+      <ion-col size="5"><h2>Title</h2></ion-col>
+      <ion-col size="4"><h2>Référence</h2></ion-col>
+      <ion-col size="3"><ion-button expand="block" routerLink="../formation" >Nouvelle formation</ion-button></ion-col>
+    </ion-row>
+    <ion-row *ngFor="let formation of formations">
+      
+      <ion-col align-self-start size="5" ><ion-item>{{ formation?.title }}</ion-item></ion-col>
+      <ion-col size="4"><ion-item>{{ formation?.reference }}</ion-item></ion-col>
+      <ion-col size="3">
+        
+        <ion-item lines="none" > 
+            <ion-button slot="start" (click)="delForm()">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+            <ion-button slot="end" routerLink="../formation/{{ formation?._id }}">
+              <ion-icon slot="icon-only" name="create"></ion-icon>
+            </ion-button>
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+
+  </ion-list>
+  
+</ion-content>

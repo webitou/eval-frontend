@@ -1,0 +1,103 @@
+<app-header title="Formation" [backBtn]="true"></app-header>
+
+<ion-content>
+    <!-- {{ formation$|async|json }}  -->
+    <div class="loading-shade" *ngIf="isLoadingResults">
+      <ion-spinner name="bubbles"> *ngIf="isLoadingResults"></ion-spinner>
+    </div>
+    
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <h3>Détail de la formation</h3>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="( formation$ | async ) as formation; else noData" color="primary" justify-content-center>
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title color="primary">{{ formation?.title }}</ion-card-title> 
+            </ion-card-header>
+              
+            <ion-card-content>
+              <ion-row>
+                <ion-col>
+                  <ion-text>Date du : <br> {{ formation?.dateStart | date:'dd-MMM-yyyy' }} <br>
+                     au {{ formation?.dateEnd | date:'dd-MMM-yyyy' }} </ion-text>
+                </ion-col>
+    
+                <ion-col>
+                  <ion-text>Jour : {{ formation?.dayWeek | dayOfWeek }}</ion-text>
+                </ion-col>
+                <ion-col>
+                  <ion-text>Heure : 18:00 - 22:00</ion-text>
+                </ion-col>
+              </ion-row>
+                      
+              <ion-row>
+                <ion-col>
+                  <ion-item><h2>Description</h2></ion-item>
+                  <ion-text color="dark"><p>{{ formation?.description }}</p></ion-text>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf="formation?.objectif">
+                <ion-col>
+                  <ion-item><h2>Objectif</h2></ion-item>
+                  <ion-text color="dark"><p>{{ formation?.objectif }}</p></ion-text>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf="formation?.content">
+                <ion-col>
+                  <ion-item><h2>Contenu</h2></ion-item>
+                  <ion-text color="dark"><p>{{ formation?.content }}</p></ion-text>
+                </ion-col>
+              </ion-row>
+    
+              <ion-row *ngIf="formation?.prerequisites">
+                <ion-col>
+                  <ion-item><h2>Pré-requis</h2></ion-item>
+                  <ion-text color="dark"><p>{{ formation?.prerequisites }}</p></ion-text>
+                </ion-col>
+              </ion-row>
+
+              <ng-template #noData>
+                <ion-row>
+                  <ion-col>
+                    <ion-item color="warning">
+                      <ion-label>
+                        Il n'y a pas de formations actuellement...
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ng-template>
+
+              <ion-row>
+                <ion-col>
+                  <section>
+                    <ion-button slot="start" routerLink="../../../formations">Retour</ion-button>
+                    <ion-button slot="end">Inscription</ion-button>
+    <!-- ACCESS ADMIN FOR EDIT -->
+    <!-- {{ _http.user.admin | json }} -->
+                    <ion-button slot="end" color="danger" tappable routerLink="../../../../admin/formation/{{ formation?._id }}">
+                      <ion-icon slot="icon-only" name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button slot="end" routerLink="../../../formation/{{ formation?._id }}/eval">Evaluation</ion-button>
+    
+                  </section>
+                </ion-col>
+              </ion-row>
+    
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+</ion-content>

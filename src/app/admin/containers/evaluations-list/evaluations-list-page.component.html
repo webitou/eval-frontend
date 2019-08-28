@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon (click)="back()" *ngIf="backBtn" name="arrow-back" slot="start"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Liste des questions d'évaluation
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  
+  <ion-list *ngIf="(evals$|async) as evals; else noData" color="primary" justify-content-center>
+    <ion-row tappable routerLink="../evaluation/{{ eval?._id }}" *ngFor="let eval of evals">
+      
+      <ion-col align-self-start size="3" ><ion-item>{{ eval?.type }}</ion-item></ion-col>
+      <ion-col size="9"><ion-item>{{ eval?.question }}</ion-item></ion-col>
+      
+
+      <!-- <ion-item lines="none">
+          <ion-button slot="start" (click)="delValue()">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+          <ion-button slot="end" [routerLink]="eval?._id">
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+      </ion-item> -->
+
+    </ion-row>
+  </ion-list>
+  
+</ion-content>

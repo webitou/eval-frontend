@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-icon (click)="back()" *ngIf="backBtn" name="arrow-back" slot="start"></ion-icon>
+    <ion-menu-button slot="end"></ion-menu-button>
+    <ion-title>
+      Ajout de question d'évaluation
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content>
+  <form [formGroup]="form">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Question</ion-label>
+          <ion-input type="text" name="question" formControlName="question" required></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label>Type</ion-label>
+          <ion-select formControlName="type" name="type">
+            <ion-select-option *ngFor="let qtype of qtypes" value="{{ qtype.value }}">{{ qtype.name }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-button (click)="submit()" expand="block" >Enregistrer</ion-button>
+
+  </ion-grid>
+  </form>
+</ion-content>
