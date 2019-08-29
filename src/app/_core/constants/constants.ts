@@ -43,3 +43,26 @@ export const daysOfWeek = [
     value: '8',
   }
 ];
+
+export const TypeOfQuestion = [
+  {
+    id: 1,
+    name: 'Instructeur',
+    value: 'teacher',
+  },
+  {
+    id: 2,
+    name: 'Matériel',
+    value: 'material'
+  },
+  {
+    id: 3,
+    name: 'Documentation',
+    value: 'documentation',
+  },
+  {
+    id: 4,
+    name: 'Centre de formation',
+    value: 'center',
+  }
+];
