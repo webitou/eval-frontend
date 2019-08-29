@@ -45,7 +45,7 @@ export class UserEditPageComponent implements OnInit {
 
     });
     this.getuser();
-    console.log( 'current user -> ', this._http.user);
+    console.log( 'current user -> ', this._http.user._id );
   }
 
   getuser() {

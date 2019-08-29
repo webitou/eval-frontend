@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
 import { HttpService } from 'src/app/_services/http.service';
 
-import { Router, Data } from '@angular/router';
+import { Router, Data, ActivatedRoute } from '@angular/router';
 import { tap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NavController } from '@ionic/angular';
@@ -22,6 +22,7 @@ export class RatingFormationPage implements OnInit {
   isLoadingResults = true;
 
   evals$: Observable<any>;
+  formation$: Observable<any>;
 
   // NAVIGATION DES QUESTIONS
   sliceFrom = 0;
@@ -31,7 +32,10 @@ export class RatingFormationPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
+    // tslint:disable-next-line: variable-name
+    private _router: Router,
+    // tslint:disable-next-line: variable-name
+    private _route: ActivatedRoute,
     // tslint:disable-next-line: variable-name
     private _http: HttpService,
   ) {}
@@ -40,8 +44,21 @@ export class RatingFormationPage implements OnInit {
   ngOnInit() {
     // STOKAGE DES VALEURS DU RATTING
     this.form = new FormGroup({
-      ratting: new FormArray([])
+      ratting: new FormArray([]),
+      formationId: new FormControl()
     });
+
+    // RECUPERATION DE ID
+    const { id = null } = this._route.snapshot.params;
+    // SI PAS ID RETOUR SUR LA LISTE
+    if ( !id ) { this._router.navigateByUrl( 'formations' ); }
+
+    this.formation$ = this._http.get( 'http://localhost:8080/api/v1/mgm-formation/' + id )
+    .pipe(
+      tap( data => console.log( data ) ),
+      map( ( res: { formation: any[] } ) => res.formation ),
+      tap( formation => this.form.patchValue({ formationId: formation._id }))
+    );
 
     // RECUPERATION DES QUESTIONS D'EVALUATION
     this.getPost();
@@ -84,6 +101,10 @@ export class RatingFormationPage implements OnInit {
       tap( data => console.log( data ) ),
       map( (res: { evals: any[] } ) => res.evals )
     );
+  }
+
+  sendEval() {
+    console.log( 'Envoi -->> ', this.form.value );
   }
 
 }

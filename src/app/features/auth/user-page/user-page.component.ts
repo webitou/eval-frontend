@@ -14,6 +14,7 @@ export class UserPageComponent implements OnInit {
 
   user$: Observable<any>;
   userConnect$: Observable<any>;
+  idUser: any;
 
   constructor(
     // tslint:disable-next-line: variable-name
@@ -29,8 +30,9 @@ export class UserPageComponent implements OnInit {
 
 
   ngOnInit() {
-
+    // console.log( 'UserID = ', this._auth.currentUserValue.userId );
     const { id = null } = this._route.snapshot.params;
+    // const { idUser = null } = this._auth.currentUserValue.userId ;
 
     if ( !id ) { this._router.navigateByUrl( 'formations' ); }
 
@@ -40,15 +42,5 @@ export class UserPageComponent implements OnInit {
         map( ( res: { user: any[] } ) => res.user )
       );
 
-// RECUPERE LA DATE DE CONNEXION DE L'UTILISATEUR
-    this.userConnect$ =  this._auth.currentUser.pipe(
-      map( res => {
-        if ( !res ) { return false; }
-        console.log('User Connect -->> ', res.lastLogin);
-        // console.log( 'currentUser ', res );
-        console.log( 'Date ', res.lastLogin );
-        return res.lastLogin;
-      })
-    );
   }
 }

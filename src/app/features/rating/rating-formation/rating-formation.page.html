@@ -65,7 +65,7 @@
       
       
       <div *ngIf="( evals$ | async ) as evals; else noData" class="bloc-rating">
-        <ion-card *ngFor="let eval of evals | slice:sliceFrom:sliceTo; let i = index; ">
+        <ion-card *ngFor="let eval of evals | slice:sliceFrom:sliceTo; ">
           <ion-card-header>
             <ion-card-subtitle>{{ eval.type }}</ion-card-subtitle>
             <ion-card-title>{{sliceFrom + 1 }}/{{ evals.length }}</ion-card-title>
@@ -84,12 +84,29 @@
                       <ion-icon size="large" color="warning" name="arrow-dropright" 
                       (click)="add( i, starRater )"></ion-icon>
                   </ion-buttons> -->
-                  <ion-button slot="end" (click)="add( i, starRater )">Suivant</ion-button>
-
+                  {{ sliceFrom }}
+                  <ion-button slot="end" *ngIf="!sliceFrom <= 18" (click)="add( i, starRater )">Suivant</ion-button>
+                  
               </ion-item>
               <ion-item lines="none" class="star">
                   <star-rater #starRater ></star-rater>
               </ion-item>
+              
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card  *ngIf="sliceFrom >= 18">
+          <ion-card-header *ngIf="( formation$ | async ) as formation;">
+            <ion-card-subtitle>Evaluation de la formation</ion-card-subtitle>
+            <ion-card-title>{{ formation?.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item  *ngIf="( formation$ | async ) as formation;">
+              <p>Merci d'avoir suivi le cours avec {{ formation?.teacher }}, et d'avoir pris le temps de remplir ce formulaire.</p>
+            </ion-item>
+            <ion-item>
+                <ion-button slot="end" (click)="sendEval()" >Envoyer</ion-button>
+            </ion-item>
           </ion-card-content>
         </ion-card>
       </div>

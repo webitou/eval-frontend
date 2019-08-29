@@ -1,5 +1,5 @@
 # eval-frontend
-Gestion des évaluations des formations
+Projet de Gestion des évaluations des formations
 
 ## Table des matières
 ### Index
