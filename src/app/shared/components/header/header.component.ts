@@ -84,13 +84,13 @@ export class HeaderComponent implements OnInit {
 
 // REDIRECTION PAGE PROFIL UTILISATEUR
   navTo( userId ) {
-    console.log( userId );
+    // console.log( userId );
     this._router.navigateByUrl( 'tabs/user/' + userId );
   }
 
 // RETOUR ARRIERE SUR NAVIGATION
   back() {
-    console.log( 'Back header -->> ' );
+    // console.log( 'Back header -->> ' );
     this._location.back();
   }
 
