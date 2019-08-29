@@ -51,7 +51,7 @@ export class UserEditPageComponent implements OnInit {
   getuser() {
     // const { id = null } = this._route.snapshot.params;
     const { id = null } = this._http.user._id;
-    console.log( 'id User ->> ', id );
+    // console.log( 'id User ->> ', id );
 
     if ( !id ) { this._router.navigateByUrl( 'formations' ); }
 

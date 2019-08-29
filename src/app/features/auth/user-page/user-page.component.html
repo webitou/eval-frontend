@@ -1,5 +1,5 @@
 <app-header title="Profile" [backBtn]="true"></app-header>
-{{ user$|async|json }} 
+<!-- {{ user$|async|json }}  -->
 <ion-content>
     <ion-grid>
         <ion-row color="primary" justify-content-center>
@@ -13,7 +13,7 @@
           <ion-col>
               <ion-card>
                 <ion-card-header>
-                  <ion-card-title color="primary">{{ user?.fullname }}</ion-card-title> 
+                  <ion-card-title >{{ user?.fullname }}</ion-card-title> 
                 </ion-card-header>
                 <ion-card-content>
                   <ion-row>
@@ -22,26 +22,40 @@
                           email : {{ user?.email }}
                       </ion-text>
                     </ion-col>
-
                     <ion-col>
-                        <ion-text>
-                            Dernier connexion : {{ user?.lastLogin }} 
-                        </ion-text>
+                      <ion-text>
+                        Dernier connexion : {{ user?.lastLogin }} {{ userConnect$|async}}
+                      </ion-text>
                     </ion-col>   
+                  </ion-row>
+
+                  <ion-row>
+                    <ion-col>
+                      <ion-text>
+                        administrateur :
+                        <ion-icon name="checkmark-circle" size="large" *ngIf="user?.admin"></ion-icon>
+                        <ion-icon name="close-circle" size="large" *ngIf="!user?.admin"></ion-icon>
+                      </ion-text>
+                    </ion-col>
                   </ion-row>
                   
                   <ion-row>
                     <ion-col>
                       <ion-item><h2>Formations</h2></ion-item>
+                      <ion-list>
+                        <ion-item *ngFor="let c of user?.course">
+                          <ion-label>{{c.title}}</ion-label>
+                        </ion-item>
+                      </ion-list>
                     </ion-col>
                   </ion-row>
 
 
                   <ion-button slot="start" routerLink="../../../formations">Retour</ion-button>
-                  
-                  <ion-button slot="end" color="danger" tappable routerLink="../../../usermod/{{ user?._id }}">
+         <!-- LIEN POUR LA MODIFICATION DU PROFIL PAR L'UTILISATEUR (A VENIR) -->
+                  <!-- <ion-button slot="end" color="danger" tappable routerLink="../../../usermod/{{ user?._id }}">
                       <ion-icon slot="icon-only" name="create"></ion-icon>
-                  </ion-button>
+                  </ion-button> -->
 
                 </ion-card-content>
               </ion-card>
@@ -49,7 +63,6 @@
 
         </ion-row>
 
-{{ data.user.admin }}
         <ng-template #noData>
             <ion-row>
               <ion-col>

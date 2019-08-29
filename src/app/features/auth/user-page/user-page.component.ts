@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/_services/http.service';
-
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-user-page',
@@ -13,6 +13,7 @@ import { HttpService } from 'src/app/_services/http.service';
 export class UserPageComponent implements OnInit {
 
   user$: Observable<any>;
+  userConnect$: Observable<any>;
 
   constructor(
     // tslint:disable-next-line: variable-name
@@ -20,7 +21,10 @@ export class UserPageComponent implements OnInit {
     // tslint:disable-next-line: variable-name
     private _route: ActivatedRoute,
     // tslint:disable-next-line: variable-name
-    private _router: Router
+    private _router: Router,
+// SERVICE UTILISATEUR
+    // tslint:disable-next-line: variable-name
+    private _auth: AuthService,
   ) {}
 
 
@@ -36,8 +40,15 @@ export class UserPageComponent implements OnInit {
         map( ( res: { user: any[] } ) => res.user )
       );
 
+// RECUPERE LA DATE DE CONNEXION DE L'UTILISATEUR
+    this.userConnect$ =  this._auth.currentUser.pipe(
+      map( res => {
+        if ( !res ) { return false; }
+        console.log('User Connect -->> ', res.lastLogin);
+        // console.log( 'currentUser ', res );
+        console.log( 'Date ', res.lastLogin );
+        return res.lastLogin;
+      })
+    );
   }
-
 }
-// BACKEND
-// VIEW USER   - GET/ http://localhost:8080/api/v1/users
