@@ -1,6 +1,7 @@
 <app-header title="Formation" [backBtn]="true"></app-header>
 
 <ion-content>
+
     <!-- {{ formation$|async|json }}  -->
     <div class="loading-shade" *ngIf="isLoadingResults">
       <ion-spinner name="bubbles"> *ngIf="isLoadingResults"></ion-spinner>
@@ -81,14 +82,16 @@
                 <ion-col>
                   <section>
                     <ion-button slot="start" routerLink="../../../formations">Retour</ion-button>
-                    <ion-button slot="end">Inscription</ion-button>
-    <!-- ACCESS ADMIN FOR EDIT -->
-    <!-- {{ _http.user.admin | json }} -->
-                    <ion-button slot="end" color="danger" tappable routerLink="../../../../admin/formation/{{ formation?._id }}">
+<!-- CHECK LOGIN FOR INSCRIPTION -->
+                    <span *ngIf="logged$|async as logged"> 
+                      <ion-button slot="end" (click)="pushInscription()">Inscription</ion-button>
+                      <ion-button slot="end" routerLink="../../../formation/{{ formation?._id }}/eval">Evaluation</ion-button>
+                    </span>
+<!-- ACCESS ADMIN FOR EDIT -->
+                    <ion-button *ngIf="showBtnAdmin$|async" slot="end" color="danger" tappable routerLink="../../../../admin/formation/{{ formation?._id }}">
                       <ion-icon slot="icon-only" name="create"></ion-icon>
                     </ion-button>
-                    <ion-button slot="end" routerLink="../../../formation/{{ formation?._id }}/eval">Evaluation</ion-button>
-    
+                   
                   </section>
                 </ion-col>
               </ion-row>
