@@ -24,6 +24,8 @@ export class RatingFormationPage implements OnInit {
   evals$: Observable<any>;
   formation$: Observable<any>;
 
+  uID: string;
+
   // NAVIGATION DES QUESTIONS
   sliceFrom = 0;
   sliceTo = 1;
@@ -31,7 +33,8 @@ export class RatingFormationPage implements OnInit {
   form: FormGroup;
 
   constructor(
-    private authService: AuthService,
+    // tslint:disable-next-line: variable-name
+    private _auth: AuthService,
     // tslint:disable-next-line: variable-name
     private _router: Router,
     // tslint:disable-next-line: variable-name
@@ -103,8 +106,27 @@ export class RatingFormationPage implements OnInit {
     );
   }
 
-  sendEval() {
-    console.log( 'Envoi -->> ', this.form.value );
+  async sendEval() {
+    // console.log( 'Envoi -->> ', this.form.value );
+    // console.log( 'id form -->> ', this.form.value.formationId );
+// UserID
+    this.uID = this._auth.currentUserValue.userId;
+    // console.log( 'user = ', this._auth.currentUserValue.userId );
+
+    const {
+      error = null, ...post
+    } = await this._http.post( 'http://localhost:8080/api/v1/mgm-formation/' + this.form.value.formationId , this.form.value )
+    .pipe(
+      tap( data => console.log( 'data-> ', data ) )
+    ).toPromise().then( ( res: any ) => res );
+    if ( error ) {
+      console.log( 'Error: ', error );
+      return;
+    }
+    console.log( 'Success :', post );
+    this._router.navigateByUrl( 'tabs/user/' + this.uID );
+
+    // ADD EVAL FORM  - POST/ http://localhost:8080/api/v1/mgm-formation/[FormId]/eval/
   }
 
 }
