@@ -71,7 +71,7 @@ export class FormationsPage implements OnInit {
     this.formations$ = this._http.get( 'http://localhost:8080/api/v1/mgm-formation' )
     .pipe(
       tap( data => console.log( data ) ),
-      map( ( res: { formations: any[] } ) => res.formations ) // .filter(f => f.xxx > 23456) )
+      map( ( res: { formations: any[] } ) => res.formations ) // .filter(f => f.date _start> date.now()) )
     );
     // AFFICHAGE DU SPINNER DE CHARGEMENT
     this.isLoadingResults = false;
