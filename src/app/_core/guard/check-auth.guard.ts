@@ -6,6 +6,7 @@ import {
   Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../_services/auth.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,11 @@ export class CheckAuthGuard implements CanActivate {
   }
 
   checkAuth() {
-    this.authService.isLogged().toPromise()
-    .then(res => console.log('loged', res)).catch(err => console.log('not loged', err));
+    this.authService.isLogged().pipe(
+      // catchError(err => err)
+    ).toPromise()
+    .then(res => console.log('loged', res))
+    .catch(err => console.log('not loged', err));
     // this.authService.isLoggedIn$.toPromise().then(res => {
     //   console.log('checkAuth', res);
     //   if ( !res ) { 
