@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
     this.showBtnMainAdmin$ =  this._auth.currentUser.pipe(
       map( res => {
         if ( !res ) { return false; }
-        console.log('Admin show btn -->> ', res.admin);
+        // console.log('Admin show btn -->> ', res.admin);
         // console.log( 'currentUser ', res );
         return res.admin;
       })
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit {
     this.userId$ =  this._auth.currentUser.pipe(
       map( res => {
         if ( !res ) { return false; }
-        console.log('UserId -->> ', res.userId);
+        // console.log('UserId -->> ', res.userId);
         // console.log( 'currentUser ', res );
         return res.userId;
       })
