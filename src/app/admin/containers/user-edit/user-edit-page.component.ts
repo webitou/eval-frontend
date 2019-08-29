@@ -16,7 +16,7 @@ import { HttpService } from 'src/app/_services/http.service';
 export class UserEditPageComponent implements OnInit {
 
   public form: FormGroup;
-  public userForms$: Observable<any>;
+  public user$: Observable<any>;
 
   constructor(
     // tslint:disable-next-line: variable-name
@@ -63,7 +63,7 @@ export class UserEditPageComponent implements OnInit {
     this.getuser();
     this.getForm();
 
-    console.log( 'current user -> ', this._http.user );
+    // console.log( 'current user -> ', this._http.user );
   }
 
   back() { this._location.back(); }
@@ -86,12 +86,14 @@ export class UserEditPageComponent implements OnInit {
   getForm() {
     const { id = null } = this._route.snapshot.params;
 
-    this.userForms$ = this._http.get( 'http://localhost:8080/api/v1/users/' + id )
-    .pipe(
-      tap( data => console.log( 'getForm -->> ', data ) ),
-      map( (res: { userForms: any[] } ) => res.userForms )
-    );
-  }
+    if ( !id ) { this._router.navigateByUrl( 'formations' ); }
+
+    this.user$ = this._http.get( 'http://localhost:8080/api/v1/users/' + id )
+      .pipe(
+        tap( data => console.log( data ) ),
+        map( ( res: { user: any[] } ) => res.user )
+      );
+   }
 
   async submit() {
     if ( !this.form.valid ) {

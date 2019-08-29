@@ -53,19 +53,32 @@
         </ion-col>
       </ion-row>
 
-  
-      <ion-row>
-          <ion-col>
-           
-            <ion-list> {{ userForms | async | json }}
-              <ion-item *ngIf="( userForms$ | async ) as userForms; else noformation"> 
-      
-                <ion-list *ngFor="let userForm of userForms">
-                    <ion-item >{{ userForm.user.course.title }}</ion-item>      
-                </ion-list>
-
-              </ion-item>
-          
+      <ion-row class="table">
+          <ion-col *ngIf="(user$|async) as user; else noData">
+           <!-- {{ user$|async|json }} -->
+                <ion-row class="tb-header">
+                  <ion-col col-4>
+                    <ion-label >Formation</ion-label>
+                  </ion-col>
+                  <ion-col col-4>
+                    <ion-label >Référence</ion-label>
+                  </ion-col>
+                  <ion-col col-4>
+                    <ion-label >Valide</ion-label>
+                  </ion-col>
+                </ion-row>
+                <ion-row *ngFor="let c of user?.course">
+                  <ion-col col-4>
+                    <ion-label >{{ c.title }}</ion-label>
+                  </ion-col>
+                  <ion-col col-4>
+                    <ion-label >{{ c.reference }}</ion-label>
+                  </ion-col>
+                  <ion-col col-4>
+                    <ion-label >{{ c.confirm }}</ion-label>
+                  </ion-col>
+                </ion-row>
+                 
               <ng-template #noformation>
                 <ion-row>
                   <ion-col>
@@ -78,7 +91,6 @@
                 </ion-row>
               </ng-template>
 
-            </ion-list>
           </ion-col>
         </ion-row> 
 
