@@ -108,7 +108,7 @@ export class FormationPage implements OnInit {
 
 
 // INFORMATION FORMATION
-    console.log( 'formation = ', this.form );
+    console.log( 'formation = ', this.form.value );
     // const data = {
     //       _id: '5d42fedc56423339a1241f35',
     //       title: 'Adobe PHOTOSHOP',
