@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { tap, map } from 'rxjs/operators';
 import { HttpService } from 'src/app/_services/http.service';
+import { TypeOfQuestion } from 'src/app/_core/constants/constants';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-evaluation-edit-page',
@@ -12,9 +14,7 @@ import { HttpService } from 'src/app/_services/http.service';
   styleUrls: ['./evaluation-edit-page.component.scss']
 })
 
-
 export class EvaluationEditPageComponent implements OnInit {
-
   constructor(
     // tslint:disable-next-line: variable-name
     private _http: HttpService,
@@ -26,31 +26,12 @@ export class EvaluationEditPageComponent implements OnInit {
     private _location: Location
   ) {}
 
-  qtypes: any[] = [
-    {
-      id: 1,
-      name: 'Instructeur',
-      value: 'teacher',
-    },
-    {
-      id: 2,
-      name: 'Matériel',
-      value: 'material'
-    },
-    {
-      id: 3,
-      name: 'Documentation',
-      value: 'documentation',
-    },
-    {
-      id: 4,
-      name: 'Centre de formation',
-      value: 'center',
-    }
-  ];
+  qtypes = TypeOfQuestion;
 
   public form: FormGroup;
 
+  evalQuestion$: Observable<any>;
+  evalQuestion: any;
 
   segmentChanged(ev: any) {
     console.log('Segment changed', ev.target.value);
@@ -58,10 +39,9 @@ export class EvaluationEditPageComponent implements OnInit {
       this.submit();
     }
     if ( ev.target.value === 'del' ) {
-      this.delForm();
+      this.delEval();
     }
   }
-
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -72,7 +52,7 @@ export class EvaluationEditPageComponent implements OnInit {
           Validators.minLength(5)
         ])
       ),
-      qtype: new FormControl(
+      qtypes: new FormControl(
         '',
         Validators.compose([
           Validators.required,
@@ -83,30 +63,35 @@ export class EvaluationEditPageComponent implements OnInit {
     });
 
     this.getform();
-    console.log( 'current user -> ', this._http.user );
+    // console.log( 'current user Eval page -> ', this._http.user );
   }
 
   back() { this._location.back(); }
 
   getform() {
-
     const { id = null } = this._route.snapshot.params;
 
     if ( !id ) { this._router.navigateByUrl( 'evaluations' ); }
 
+    // return this._http.get( 'http://localhost:8080/api/v1/eval/' + id )
+    //   .pipe(
+    //     tap( data => console.log( 'Data evalQuestion -->> ', data ) ),
+    //     map( ( res: { evalQuestion: any[] } ) => res.evalQuestion )
+    //   ).toPromise().then( evalQuestion => {
+    //     console.log( 'evalQuestion -->> ', evalQuestion );
+    //     this.form.patchValue( evalQuestion );
+    //   });
+
     this._http.get( 'http://localhost:8080/api/v1/eval/' + id )
-      .pipe(
-        tap( evalquest => console.log( 'evalquest ->> ', evalquest ) ),
-        map( (res: { evalquest: any[] } ) => res.evalquest )
-      ).toPromise().then( evalquest => {
-        console.log( evalquest );
-        this.form.patchValue( evalquest );
-      });
+    .subscribe( ( res: any[] ) => {
+      console.log( 'Eval -->> ', res);
+      this.evalQuestion = res;
+      console.log( 'evalQuestion -->> ', this.evalQuestion );
+      this.form.patchValue( this.evalQuestion );
+    });
   }
 
-
   async submit() {
-
     if ( !this.form.valid ) {
       console.log( 'Invalid form POST ->> ', this.form );
       return;
@@ -127,16 +112,18 @@ export class EvaluationEditPageComponent implements OnInit {
   }
 
 
-  async delForm() {
+  async delEval() {
+    const { id = null } = this._route.snapshot.params;
 
-    if ( !this.form.valid ) {
-      console.log( 'Invalid form DEL ->> ', this.form );
-      return;
-    }
-
+    if ( !id ) { this._router.navigateByUrl( 'evaluations' ); }
+    // if ( !this.form.valid ) {
+    //   console.log( 'Invalid form DEL ->> ', this.form );
+    //   return;
+    // }
     const {
       error = null, ...post
-    } = await this._http.delete( 'http://localhost:8080/api/v1/eval/' + this.form.value._id )
+    // } = await this._http.delete( 'http://localhost:8080/api/v1/eval/' + this.form.value._id )
+    } = await this._http.delete( 'http://localhost:8080/api/v1/eval/' + id )
     .pipe(
       tap( data => console.log( 'data-> ', data ) )
     ).toPromise().then( ( res: any ) => res );
@@ -146,15 +133,5 @@ export class EvaluationEditPageComponent implements OnInit {
     }
     console.log( 'Success delete :', post );
     this._router.navigateByUrl( '/admin/evaluations' );
-
   }
-
 }
-// BACKEND
- // UPDATE EVAL  - POST/ http://localhost:8080/api/v1/eval/[FormId]
-          // {
-          //   "question": "",
-          //   "type": "[]",
-          // }
-
-

@@ -9,24 +9,32 @@
 </ion-header>
   
 <ion-content>
-  
+
   <ion-list *ngIf="(evals$|async) as evals; else noData" color="primary" justify-content-center>
-    <ion-row tappable routerLink="../evaluation/{{ eval?._id }}" *ngFor="let eval of evals">
-      
-      <ion-col align-self-start size="3" ><ion-item>{{ eval?.type }}</ion-item></ion-col>
-      <ion-col size="9"><ion-item>{{ eval?.question }}</ion-item></ion-col>
-      
-
-      <!-- <ion-item lines="none">
-          <ion-button slot="start" (click)="delValue()">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-button>
-          <ion-button slot="end" [routerLink]="eval?._id">
-            <ion-icon slot="icon-only" name="create"></ion-icon>
-          </ion-button>
-      </ion-item> -->
-
-    </ion-row>
-  </ion-list>
+      <ion-row>
+        <ion-col size="2"><h2>Type</h2></ion-col>
+        <ion-col size="7"><h2>Question</h2></ion-col>
+        <ion-col size="3"><ion-button expand="block" routerLink="../eval" >Ajout</ion-button></ion-col>
+      </ion-row>
+      <ion-row *ngFor="let eval of evals">
+        
+        <ion-col align-self-start size="2" ><ion-item>{{ eval?.type }}</ion-item></ion-col>
+        <ion-col size="7"><ion-item>{{ eval?.question }}</ion-item></ion-col>
+        <ion-col size="3">
+          
+          <ion-item lines="none" > 
+  <!-- La suppression de l'évaluation viendra dans un second temps -->
+              <!-- <ion-button slot="start" (click)="delEvaluation()">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-button> -->
+              <ion-button slot="end" routerLink="../evaluation/{{ eval?._id }}">
+                <ion-icon slot="icon-only" name="create"></ion-icon>
+              </ion-button>
+          </ion-item>
+  
+        </ion-col>
+      </ion-row>
+  
+    </ion-list>
   
 </ion-content>

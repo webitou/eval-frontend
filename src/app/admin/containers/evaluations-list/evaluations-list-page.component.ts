@@ -19,7 +19,7 @@ export class EvaluationsListPageComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
-    console.log( 'current user -> ', this._http.user);
+    // console.log( 'current user -> ', this._http.user);
   }
 
   getPost() {
@@ -29,18 +29,13 @@ export class EvaluationsListPageComponent implements OnInit {
       map( (res: { evals: any[] } ) => res.evals )
     );
   }
+// La suppression de l'évaluation viendra dans un second temps
+  // async delValuation( id ) {
+  //   const url = `http://localhost:8080/api/v1/eval/${id}`;
+  //   return this._http.delete( url ).pipe(
+  //       tap( data => console.log( data ) ),
+  //     map( ( res: { formations: any[] } ) => res.formations ));
+  //   console.log( 'Success delete');
 
-
-  async delValue( id ) {
-
-    const url = `http://localhost:8080/api/v1/eval/${id}`;
-    return this._http.delete( url ).pipe(
-        tap( data => console.log( data ) ),
-      map( ( res: { formations: any[] } ) => res.formations ));
-    console.log( 'Success delete');
-
-  }
-
+  // }
 }
-// BACKEND
-// VIEW EVALS   - GET/ http://localhost:8080/api/v1/eval/
