@@ -3,25 +3,24 @@
   <ion-toolbar color="primary">
     
     <ion-icon (click)="back()" *ngIf="backBtn" name="arrow-back" slot="start" size="large"></ion-icon>
-      <pre>{{ logged$|async|json }}</pre>
+      <!-- <pre>{{ logged$|async|json }}</pre> -->
      
-    <ion-buttons slot="secondary" >
+    <ion-buttons *ngIf="userId$|async as user" slot="secondary" >
       <div *ngIf="logged$|async as logged"> 
         <ion-button (click)="logout()" title="Déconnexion" >
           <ion-icon slot="icon-only"  name="log-out"></ion-icon>
         </ion-button> 
 
-        <ion-button title="Profil" >
-          <ion-icon slot="icon-only" (click)="getProfil()" name="contact"></ion-icon>
+        <ion-button title="Profil" tappable (click)="navTo( user )" >
+          <ion-icon slot="icon-only" name="contact"></ion-icon>
         </ion-button>
       </div> 
       <ion-button *ngIf="dspSearchBtn" (click)="getSearch()" title="Rechercher">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
+    </ion-buttons>
 
-      </ion-buttons>
-
-      <ion-buttons slot="primary">
+      <ion-buttons *ngIf="showBtnMainAdmin$|async" slot="primary">
       
         <ion-menu-button slot="end"></ion-menu-button>
         

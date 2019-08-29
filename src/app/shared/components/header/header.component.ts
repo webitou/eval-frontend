@@ -8,7 +8,6 @@ import { SearchService } from 'src/app/_services/search.service';
 // COMPONENTS
 import { map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { IUser } from 'src/app/_models';
 
 
 @Component({
@@ -20,50 +19,73 @@ export class HeaderComponent implements OnInit {
 
   @Input() title: string;
   @Input() backBtn: false;
-  @Input() showBtnAdmin: false;
 
   // AFFICHAGE DU BOUTON ET DU CHAMPS RECHERCHE
   searchBtn = false;
   dspSearchBtn = false;
 
+  // AFFICHAGE DU BOUTON ADMIN TOP
+  showBtnMainAdmin$: Observable<boolean> = of(false);
+
+  userId$: Observable<any>;
+
   // AFFICHAGE DES BOUTONS UTILISATEUR
   logged$: Observable<boolean> = this._auth.isLoggedIn$;
 
-  public user$: Observable<IUser>;
-
   constructor(
+// FOR BACK BUTTON
     // tslint:disable-next-line: variable-name
     private _location: Location,
-    // tslint:disable-next-line: variable-name
-    private _route: ActivatedRoute,
+// FOR SEARCH BUTTON
     // tslint:disable-next-line: variable-name
     private _router: Router,
-    // SERVICE UTILISATEUR
+// SERVICE UTILISATEUR
     // tslint:disable-next-line: variable-name
     private _auth: AuthService,
-    //  NOTIFICATIONS
+//  NOTIFICATIONS
     private toastController: ToastController
   ) { }
 
+
   ngOnInit() {
-// this._auth.isLoggedIn$
 
+// CONTROLE USER ACCESS
+    this.showBtnMainAdmin$ =  this._auth.currentUser.pipe(
+      map( res => {
+        if ( !res ) { return false; }
+        console.log('Admin show btn -->> ', res.admin);
+        // console.log( 'currentUser ', res );
+        return res.admin;
+      })
+    );
 
-    const userAdmin = this._auth.isLogged();
-    console.log( 'User --> ', userAdmin );
+// RECUPERE ID DE L'UTILISATEUR
+    this.userId$ =  this._auth.currentUser.pipe(
+      map( res => {
+        if ( !res ) { return false; }
+        console.log('UserId -->> ', res.userId);
+        // console.log( 'currentUser ', res );
+        return res.userId;
+      })
+    );
 
 // AFFICHAGE DU BOUTON DE RECHERCHE
     const routeUrlactive = this._router.url;
     if ( routeUrlactive === '/tabs/formations' ) {
       this.dspSearchBtn = true;
     }
-
   }
 
 // DECONNEXION AVEC AUTH.SERVICE
   logout() {
     this._auth.logout();
     this.showSuccessLogout();
+  }
+
+// REDIRECTION PAGE PROFIL UTILISATEUR
+  navTo( userId ) {
+    console.log( userId );
+    this._router.navigateByUrl( 'tabs/user/' + userId );
   }
 
 // RETOUR ARRIERE SUR NAVIGATION
@@ -81,10 +103,6 @@ export class HeaderComponent implements OnInit {
       position: 'middle',
     });
     toast.present();
-  }
-
-  getProfil() {
-
   }
 
 // AFFICHAGE DU BOUTON RECHERCHE
