@@ -48,8 +48,9 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError( ( error: HttpErrorResponse ) => {
         console.log( error );
         console.log( this.router.url );
-        if ( error.status === 401 &&  this.router.url !== '/tabs/formations' ) {
-          this.router.navigate( [ 'tabs/signin' ] );
+        if ( error.status === 401 &&  this.router.url.includes('formations' )) {
+          // this.router.navigate( [ 'tabs/signin' ] );
+          localStorage.removeItem( 'authToken' );
         }
         if ( error.status === 400 ) {
           alert( error.error );

@@ -36,7 +36,6 @@ export class AuthService {
 
       this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
       this.currentUser = this.currentUserSubject.asObservable();
-
     }
 
     public get currentUserValue(): IUser {
@@ -52,7 +51,6 @@ export class AuthService {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               // localStorage.setItem('currentUser', JSON.stringify(user));
               this.currentUserSubject.next( user );
-              this._isLoggedIn.next( true );
           }
           return user;
       }),
@@ -64,15 +62,18 @@ export class AuthService {
   isLogged(): Observable<any> {
     return this._http.get<any>( apiUrl + 'isAuth' ).pipe(
       tap(res => res.auth ? this._isLoggedIn.next(true) : this._isLoggedIn.next(false)),
+      tap(res => this.currentUserSubject.next( res.user )),
       tap(res => {
         console.log('Is Logged ....', res);
-      })
+      }),
+      // catchError(err => {console.log('err ....', err);return err})
     );
   }
 
 
   logout() {
     this._isLoggedIn.next(false);
+    this.currentUserSubject.next(null);
     localStorage.removeItem('authToken');
     this._router.navigate(['/tabs/signin']);
   }
