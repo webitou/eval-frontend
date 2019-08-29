@@ -9,3 +9,9 @@
 .col{
   max-width :20% !important;
 }
+
+ion-segment-button.del {
+  --background: red;
+  --color: #fff;
+  --background-hover: red;
+}

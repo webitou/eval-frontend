@@ -29,6 +29,16 @@ export class UserEditPageComponent implements OnInit {
     private _location: Location
   ) {}
 
+  segmentChanged( ev: any ) {
+    console.log( 'Segment changed', ev.target.value );
+    if ( ev.target.value === 'save' ) {
+      this.submit();
+    }
+    if ( ev.target.value === 'del' ) {
+      this.delUser();
+    }
+  }
+
   ngOnInit() {
     this.form = new FormGroup( {
       fullname: new FormControl(
@@ -112,6 +122,22 @@ export class UserEditPageComponent implements OnInit {
     }
     console.log( 'Success :', post );
     this._router.navigateByUrl( '/admin/users' );
+  }
+
+  async delUser() {
+    const {
+      error = null, ...post
+    } = await this._http.delete( 'http://localhost:8080/api/v1/users/' + this.form.value._id )
+    .pipe(
+      tap( data => console.log( 'data Delete -->> ', data ) )
+    ).toPromise().then( ( res: any ) => res );
+    if ( error ) {
+      console.log( 'Error: ', error );
+      return;
+    }
+    console.log( 'Success delete :', post );
+    this._router.navigateByUrl( '/admin/users' );
+
   }
 
 }
