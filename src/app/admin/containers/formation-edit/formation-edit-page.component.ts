@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+
+import { tap, map } from 'rxjs/operators';
 import { HttpService } from 'src/app/_services/http.service';
 import { daysOfWeek } from '../../../_core/constants/constants';
 
@@ -13,9 +13,7 @@ import { daysOfWeek } from '../../../_core/constants/constants';
   styleUrls: ['./formation-edit-page.component.scss']
 })
 
-
 export class FormationEditPageComponent implements OnInit {
-
   constructor(
     // tslint:disable-next-line: variable-name
     private _http: HttpService,
@@ -32,36 +30,35 @@ export class FormationEditPageComponent implements OnInit {
 
   public form: FormGroup;
 
-
   // tslint:disable-next-line: variable-name
   account_validation_messages = {
-    'title': [
+    title: [
       { type: 'required', message: 'Un titre de formation est requis !' },
       { type: 'minlength', message: 'Le titre doit avoir minimum 5 caractères !' },
     ],
-    'reference': [
+    reference: [
       { type: 'required', message: 'La formation doit avoir une référence !' },
       { type: 'minlength', message: 'Le titre doit avoir minimum 5 caractères !' },
     ],
-    'dateStart': [
+    dateStart: [
       { type: 'required', message: 'La date de départ est requis !' },
     ],
-    'dateEnd': [
+    dateEnd: [
       { type: 'required', message: 'Une date de fin est requis !' },
     ],
-    'dayWeek': [
+    dayWeek: [
       { type: 'required', message: 'Le/Les jour/s de formation est/sont requis !' },
     ],
-    'timeStart': [
+    timeStart: [
       { type: 'required', message: 'L\'heure de départ est requis !' },
     ],
-    'timeEnd': [
+    timeEnd: [
       { type: 'required', message: 'L\'heure de fin est requis !' },
     ],
-    'teacher': [
+    teacher: [
       { type: 'required', message: 'Un formateur est requis !' },
     ],
-    'description': [
+    description: [
       { type: 'required', message: 'Une description est nécésaire !' },
     ]
   };
@@ -76,10 +73,7 @@ export class FormationEditPageComponent implements OnInit {
     }
   }
 
-
   ngOnInit() {
-
-
     this.form = new FormGroup( {
       title: new FormControl(
         'Adobe Photoshop',
@@ -150,15 +144,12 @@ export class FormationEditPageComponent implements OnInit {
     } );
 
     this.getform();
-    console.log( 'current user -> ', this._http.user );
+    // console.log( 'current user Edit Form -> ', this._http.user );
   }
 
-  back() {
-    this._location.back();
-  }
+  back() { this._location.back(); }
 
   getform() {
-
     const { id = null } = this._route.snapshot.params;
 
     if ( !id ) { this._router.navigateByUrl( 'formations' ); }
@@ -168,7 +159,7 @@ export class FormationEditPageComponent implements OnInit {
         // tap( data => console.log( data ) ),
         map( (res: { formation: any[] } ) => res.formation )
       ).toPromise().then( formation => {
-        console.log( formation );
+        // console.log( formation );
         this.form.patchValue( formation );
       });
   }
@@ -177,9 +168,6 @@ export class FormationEditPageComponent implements OnInit {
 
     if ( !this.form.valid ) {
       console.log( 'Invalid form (Required) ->> ', this.form );
-
-
-
 
       return;
     }
@@ -213,18 +201,5 @@ export class FormationEditPageComponent implements OnInit {
     }
     console.log( 'Success delete :', post );
     this._router.navigateByUrl( '/admin/formations' );
-
   }
-
 }
-// BACKEND
- // UPDATE FORM  - POST/ http://localhost:8080/api/v1/mgm-formation/[FormId]
-          // {
-          //   "title": "formation title",
-          //   "reference": "reference formation",
-          //   "dateStart": "2019-08-04",
-          //   "dateEnd": "2019-08-28",
-          //   "dayWeek": 2
-          // }
-
-

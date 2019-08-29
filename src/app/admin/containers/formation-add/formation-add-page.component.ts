@@ -159,14 +159,3 @@ export class FormationAddPageComponent implements OnInit {
     this._router.navigateByUrl( '/tabs/formations' );
   }
 }
-// BACKEND
-// ADD FORM     - POST/ http://localhost:8080/api/v1/mgm-formation/
-          // {
-          //   "title": "formation title",
-          //   "reference": "reference formation",
-          //   "dateStart": "2019-08-04",
-          //   "dateEnd": "2019-08-28",
-          //   "dayWeek": 2
-          // }
-
-

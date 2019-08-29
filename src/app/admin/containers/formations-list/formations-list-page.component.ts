@@ -24,7 +24,7 @@ export class FormationsListPageComponent implements OnInit {
 
   ngOnInit() {
     this.getPost();
-    console.log( 'current user -> ', this._http.user);
+    console.log( 'current user List Form -> ', this._http.user);
   }
 
   getPost() {
