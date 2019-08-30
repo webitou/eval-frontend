@@ -27,14 +27,15 @@ export class FormationPage implements OnInit {
   id: string;
   uID: string;
 
-  formation: any;
 
   // tslint:disable-next-line: variable-name
   private _isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   isLoggedIn$: Observable<boolean> = this._isLoggedIn.asObservable();
 
   showBtnAdmin$: Observable<boolean> = of( false );
+
   formation$: Observable<any>;
+  formation: any;
 
 // AFFICHAGE DES BOUTONS UTILISATEUR
   logged$: Observable<boolean> = this._auth.isLoggedIn$;
@@ -91,16 +92,13 @@ export class FormationPage implements OnInit {
 // SI PAS ID RETOUR SUR LA LISTE
     if ( !id ) { this._router.navigateByUrl( 'formations' ); }
 
-    this.formation$ = this._http.get( 'http://localhost:8080/api/v1/mgm-formation/' + id )
-     .pipe(
-       tap( data => console.log( 'List form send -->> ', data ) ),
-       map( ( res: { formation: any[] } ) => res.formation ),
-       tap( formation => this.form.patchValue( {
-        _id: formation._id,
-        title: formation.title,
-        reference: formation.reference
-       } ) )
-     );
+    this._http.get( 'http://localhost:8080/api/v1/mgm-formation/' + id )
+    .subscribe( ( res: any[] ) => {
+      console.log( 'Formation -->> ', res);
+      this.formation = res;
+      console.log( 'formation -->> ', this.formation );
+      this.form.patchValue( this.formation );
+    });
 
 // UserID
     this.uID = this._auth.currentUserValue.userId;
@@ -108,7 +106,7 @@ export class FormationPage implements OnInit {
 
 
 // INFORMATION FORMATION
-    console.log( 'formation = ', this.form.value );
+    console.log( 'formation = ', this.formation );
     // const data = {
     //       _id: '5d42fedc56423339a1241f35',
     //       title: 'Adobe PHOTOSHOP',
@@ -121,19 +119,18 @@ export class FormationPage implements OnInit {
     // };
 
 
-
-    // this._http.post( 'http://localhost:8080/api/v1/users/' + this.uID + '/formations', this.form )
-    //     .pipe(
-    //       map( formation => {
-    //         console.log( 'Formation send -->> ', formation );
-    //         return formation;
-    //       }),
-    //       tap( _ => this._isLoggedIn.next(true) ),
-    //     ).toPromise().then(res => {
-    //       console.log('inscription ok', res);
-    //     })
-    //     .catch(err => {
-    //       console.log('err inscription', err);
-    //     });
+    this._http.post( 'http://localhost:8080/api/v1/users/' + this.uID + '/formations', this.formation )
+        .pipe(
+          map( formation => {
+            console.log( 'Formation send -->> ', formation );
+            return formation;
+          }),
+          tap( _ => this._isLoggedIn.next(true) ),
+        ).toPromise().then(res => {
+          console.log('inscription ok', res);
+        })
+        .catch(err => {
+          console.log('err inscription', err);
+        });
   }
 }
