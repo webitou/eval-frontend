@@ -5,7 +5,7 @@ import { Formations } from '../../../_models';
 // COMPOSANTS
 import { Router } from '@angular/router';
 import { tap, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 // SERVICES
 import { FormationService } from 'src/app/_services/formations.service';
 import { HttpService } from 'src/app/_services/http.service';
@@ -24,12 +24,15 @@ export class FormationsPage implements OnInit {
   displayedColumns: string[] = [ 'title', 'reference' ];
   isLoadingResults = true;
 
+  showBtnAdmin$: Observable<boolean> = of( false );
+
   formations$: Observable<any>;
-  // RECHERCHE
+// RECHERCHE
   items$: Observable<any>;
 
   constructor(
-    private authService: AuthService,
+    // tslint:disable-next-line: variable-name
+    private _auth: AuthService,
     private formationService: FormationService,
     private router: Router,
     // tslint:disable-next-line: variable-name
@@ -42,13 +45,22 @@ export class FormationsPage implements OnInit {
 
     this.getPost();
 
-    //  SEARCH
+// SEARCH
     this.items$ = this._itemsService.getItems();
 
     // NE FONCTIONNE PAS
     // this.getFormations();
 
-    // console.log( 'logged --> ', this.authService.isLoggedIn );
+
+// CONTROLE USER ACCESS
+    this.showBtnAdmin$ =  this._auth.currentUser.pipe(
+      map( res => {
+        if ( !res ) { return false; }
+        // console.log('Show BtnAdmin Formation detail -->> ', res.admin);
+        // console.log('Show res -->> ', res);
+        return res.admin;
+      })
+    );
   }
 
   // VOIR AVEC PROF ///////////////////////////////////////////
@@ -73,11 +85,11 @@ export class FormationsPage implements OnInit {
       tap( data => console.log( data ) ),
       map( ( res: { formations: any[] } ) => res.formations ) // .filter(f => f.date _start> date.now()) )
     );
-    // AFFICHAGE DU SPINNER DE CHARGEMENT
+// AFFICHAGE DU SPINNER DE CHARGEMENT
     this.isLoadingResults = false;
   }
 
-
+// FONCTION SEARCH N'EST PAS ENCORE EN FONCTION
   search( $event ) {
     console.log( 'search key -->> ', $event.detail.value );
     this.items$ = this._itemsService.getItems().pipe(
@@ -90,6 +102,7 @@ export class FormationsPage implements OnInit {
       })
     );
   }
+  // BACKEND
   // http://localhost:8080/api/v1/formation?q=
 
 }
